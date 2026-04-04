@@ -16,7 +16,7 @@ require("autocmds")
 
 utils.color_overrides.setup_colorscheme_overrides()
 
-vim.cmd.colorscheme("custom")
+vim.cmd.colorscheme("base16-chalk")
 
 utils.fix_telescope_parens_win()
 utils.dashboard.setup_dashboard_image_colors()

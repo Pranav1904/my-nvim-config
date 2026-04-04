@@ -16,6 +16,7 @@ vim.cmd("set foldnestmax=1")
 vim.cmd("set foldopen-=hor")
 vim.cmd("set splitright")
 
+vim.opt.clipboard = "unnamedplus"
 vim.opt.exrc = true
 vim.o.scrolloff = 5
 vim.opt.ignorecase = true
