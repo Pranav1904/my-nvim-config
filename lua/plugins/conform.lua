@@ -27,6 +27,11 @@ return {
         css = { "prettier", stop_after_first = true },
         fennel = { "fnlfmt" }
       },
+      formatters = {
+        clang_format = {
+          prepend_args = { "--style={BasedOnStyle: LLVM, SortIncludes: false}" },
+        },
+      },
       format_on_save = function(_)
         if vim.g.disable_autoformat then
           return
