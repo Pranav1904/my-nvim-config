@@ -6,6 +6,9 @@ return {
     -- branch = "0.1.x",
     dependencies = {
       "nvim-lua/plenary.nvim",
+      -- <leader>fb was mapped to :Telescope file_browser but this was never
+      -- installed, so the key errored out.
+      "nvim-telescope/telescope-file-browser.nvim",
       {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
@@ -60,6 +63,7 @@ return {
 
       -- require("telescope").load_extension("fzf")
       require("telescope").load_extension("zoxide")
+      require("telescope").load_extension("file_browser")
       -- telescope setup
       local builtin = require("telescope.builtin")
       vim.keymap.set("n", "<leader>jk", ":Telescope find_files<CR>", {})

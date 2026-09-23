@@ -482,23 +482,43 @@ return {
 				capabilties = capabilities,
 			})
 
+			-- Prefer Espressif's clangd: it is the only build that knows the
+			-- xtensa/riscv32-esp targets. Stock/Apple clangd dies with
+			-- "unknown target CPU 'esp32xx'" and then no preamble is built,
+			-- which is why gd/gr silently do nothing in ESP-IDF.
+			local function newest_glob(pat)
+				local matches = vim.fn.glob(vim.fn.expand(pat), false, true)
+				table.sort(matches)
+				return matches[#matches]
+			end
+
+			local clangd_bin = newest_glob("~/.espressif/tools/esp-clangd/*/esp-clangd/bin/clangd") or "clangd"
+
 			require("lspconfig").clangd.setup({
 				cmd = {
-					"clangd",
+					clangd_bin,
 					"--background-index",
 					"--pch-storage=memory",
 					"--all-scopes-completion",
 					"--pretty",
 					"--header-insertion=never",
 					"-j=4",
-					"--inlay-hints",
 					"--header-insertion-decorators",
 					"--function-arg-placeholders",
 					"--completion-style=detailed",
+					-- Let clangd interrogate the real xtensa/riscv GCC for its
+					-- system include paths instead of guessing host ones.
+					"--query-driver=" .. vim.fn.expand("~/.espressif/tools/**/bin/*-esp-elf-gcc"),
 				},
 				filetypes = { "c", "cpp", "objc", "objcpp" },
-				root_dir = require("lspconfig").util.root_pattern("src"),
-				init_option = { fallbackFlags = { "-std=c++2a" } },
+				-- ESP-IDF has no top-level "src"; the old pattern never matched,
+				-- so clangd started in single-file mode with no compile flags.
+				root_dir = require("lspconfig").util.root_pattern(
+					".clangd",
+					"compile_commands.json",
+					"compile_flags.txt",
+					".git"
+				),
 				capabilities = capabilities,
 				single_file_support = true,
 			})

@@ -3,6 +3,13 @@ return {
 	event = "VeryLazy",
 	opts = {
 		preset = "helix",
+		spec = {
+			{ "<leader>b", group = "buffer" },
+			{ "<leader>c", group = "code" },
+			{ "<leader>f", group = "find" },
+			{ "<leader>g", group = "git" },
+			{ "<leader>q", group = "quickfix" },
+		},
 		plugins = {
 			marks = false,
 			operators = false,

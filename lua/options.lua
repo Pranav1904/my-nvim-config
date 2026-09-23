@@ -8,7 +8,10 @@ vim.cmd("set scrolloff=5")
 vim.cmd("autocmd FileType sql setlocal noautoindent")
 vim.cmd("autocmd FileType sql setlocal nosmartindent")
 vim.cmd("autocmd FileType sql setlocal nocindent")
-vim.cmd("set signcolumn=no")
+-- "yes" (not "no") still prevents the right-shift you were avoiding: the column
+-- is reserved permanently, so text never moves when a sign appears. "no" meant
+-- git hunk marks and dap breakpoints had nowhere to render.
+vim.cmd("set signcolumn=yes")
 vim.cmd("set foldmethod=expr")
 vim.cmd("set foldexpr=nvim_treesitter#foldexpr()")
 vim.cmd("set foldlevel=99")
@@ -49,8 +52,8 @@ vim.cmd("set shellcmdflag=-c")
 vim.cmd("set shellquote=")
 vim.cmd("set shellxquote=")
 
--- stop right-shift when errors/warning appear
-vim.o.signcolumn = "no"
+-- stop right-shift when errors/warning appear (reserved column, never toggles)
+vim.o.signcolumn = "yes"
 vim.o.completeopt = "menuone,noselect,preview"
 
 vim.opt.tabstop = 2
